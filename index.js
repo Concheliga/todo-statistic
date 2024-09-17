@@ -36,13 +36,29 @@ function findAllTODOComments(files){
     return comments;
 }
 
+function getImportantComments(comments){
+    let importantComments = [];
+    for (let comment of comments){
+        if (comment.includes('!')){
+            importantComments.push(comment);
+        }
+    }
+
+    return importantComments;
+}
+
 function processCommand(command) {
+    const comments = findAllTODOComments(getFiles());
+
     switch (command) {
         case 'exit':
             process.exit(0);
             break;
         case 'show':
-            console.log(findAllTODOComments(getFiles()));
+            console.log(comments);
+            break;
+        case 'important':
+            console.log(getImportantComments(comments));
             break;
         default:
             console.log('wrong command');
