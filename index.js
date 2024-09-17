@@ -47,8 +47,37 @@ function getImportantComments(comments){
     return importantComments;
 }
 
+function getUserComments(comments, userName){
+    let userComments = [];
+
+    for (let comment of comments){
+        let currentUser = '';
+        if (comment.includes(';')){
+            for (let i = 8; i < comment.length; i++){
+                if (comment[i] === ';'){
+                    break;
+                }
+    
+                currentUser += comment[i];
+            }
+            
+            if (currentUser.toLowerCase() === userName.toLowerCase()){
+                userComments.push(comment);
+            }
+        }  
+    }
+
+    return userComments;
+}
+
 function processCommand(command) {
     const comments = findAllTODOComments(getFiles());
+    let userName = '';
+
+    if (command.includes('user')){
+        userName = command.slice(6, -1);
+        command = 'user';
+    }
 
     switch (command) {
         case 'exit':
@@ -59,6 +88,9 @@ function processCommand(command) {
             break;
         case 'important':
             console.log(getImportantComments(comments));
+            break;
+        case 'user':
+        console.log(getUserComments(comments, userName))
             break;
         default:
             console.log('wrong command');
